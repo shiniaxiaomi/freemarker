@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <h1>Freemarker的高级使用</h1>
+
+    <h2>1.字符串操作</h2>
+    <ul>
+        <#assign a="hello"/>
+        <#assign b="world"/>
+        <li>连接: ${a+b}</li>
+        <li>截取: ${(a+b)?substring(5,8)}</li>
+        <li>长度: ${(a+b)?length}</li>
+        <li>大写: ${(a+b)?upper_case}</li><!-- upper_case是freemarker的内置函数,内置函数的命名是用"_"分隔的 -->
+        <li>小写: ${(a+b)?lower_case}</li>
+        <li>首次出现的索引: ${(a+b)?index_of('w')}</li>
+        <li>最后一次出现的索引: ${(a+b)?last_index_of('o')}</li>
+        <li>替换: ${(a+b)?replace('o','x')}</li>
+    </ul>
+
+    <h2>2.自定义函数</h2>
+    <ul>
+        <#assign myList=[2,3,6,8,9,4,1,5]/><!-- 定义一个数组变量 -->
+        <li>未排序:
+            <#list myList as item>
+                "${item_index}" : ${item} ,<!-- 使用${item_index}可以取出遍历时的下标 -->
+            </#list>
+        </li>
+        <li>已排序:
+            <#list sort_init(myList) as item><!-- 使用自定义函数sort_init()进行排序之后在进行遍历 -->
+                "${item_index}" : ${item} ,
+            </#list>
+        </li>
+        <li>集合长度:${myList?size}</li>
+        <li>集合下标取值myList[2]:${myList[2]}</li>
+    </ul>
+
+    <h2>3.内建函数</h2>
+    <ul>
+        <li>字符串分隔:
+            <#list "a|b|c|d"?split("|") as item>
+                ${item},
+            </#list>
+        </li>
+
+        <li>字符串转日期:
+            <#assign var1="01/03/2017"?date("MM/dd/yyyy") />
+            <#assign var2="15:05:30"?time("HH:mm:ss") />
+            <#assign var3="2016-12-31 03:05 PM"?datetime("yyyy-MM-dd hh:mm") />
+            ${var1} , ${var2} , ${var3},
+        </li>
+
+        <li>数字类型精确小数:
+            <#assign numVar1=314.5562 />
+            ${numVar1?string("0.##")}
+        </li>
+
+        <li>list分组:
+            <#assign listVar1=[1,2,3,4,5,6,7,8] />
+            分组后的个数:${listVar1?chunk(2)?size},<!-- 分为2个一组 -->
+            最后一组:<#list listVar1?chunk(2)?last as item>${item},</#list>
+        </li>
+
+        <li>其他内建函数:
+            <#assign sVar="hello" />
+            <#assign sVar1=4 />
+            ${sVar} is number:${sVar?is_number?string('yes','no')}<br/>
+            ${sVar1} is number:${sVar1?is_number?string('yes','no')}<br/>
+        </li>
+
+
+    </ul>
+
+</body>
+</html>

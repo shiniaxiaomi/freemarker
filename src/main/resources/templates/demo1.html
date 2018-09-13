@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <h1>Freemarker的基本使用</h1>
+
+    <h2>1.取基本值</h2>
+    <div>
+        <ul>
+            <li>整数: ${intVar} </li>
+            <li>长整数: ${longVar} </li>
+            <li>字符串: ${stringVar} </li>
+            <li>双精度: ${doubleVar} </li>
+            <li>布尔值: ${booleanVar?string("yes","no")} </li><!-- freemarker中不能输出true或者false,要通过内置函数进行转义 -->
+            <li>日期: ${dateVar?string("yyyy-MM-dd HH:mm:ss")} </li><!-- 使用?string()内置函数进行日期格式化 -->
+            <li>null: ${nullVar!'我是默认值'} </li><!-- 如果为空值则输出默认值 -->
+            <li>missing: ${missing!'我是默认值'} </li><!-- 如果modelAndView中没有missing属性,则加上!即可为其设置默认值 -->
+        </ul>
+    </div>
+
+    <h2>2.赋值$运算</h2>
+    <div>
+        <ul>
+            <#assign a=100 /><!-- 使用assign标签的定义一个变量a -->
+            <li>a = ${a} </li>
+            <li>a+100 = ${a+100} </li><!-- 运算 -->
+            <li>a*100 = ${a*100} </li><!-- 运算 -->
+        </ul>
+    </div>
+
+    <h2>3.对象取值</h2>
+    <div>
+        <ul>
+            <li>姓名: ${(myUser.name)!'默认值'} </li><!-- 加上()进行将User.name看做是一个整体进行判断是否为null(即判断User是否为null),也可以为此设置默认值-->
+            <li>年龄: ${myUser.age} </li>
+            <li>链接: ${myUser.desc?html} </li><!-- 如果要输出纯文本,则使用?html -->
+        </ul>
+    </div>
+
+    <h2>4.List遍历</h2>
+    <div>
+        <ul>
+            <#list myList as item><!-- 通过list标签进行遍历,item相当于是一个变量 -->
+                <li>${item!}</li>
+            </#list>
+        </ul>
+    </div>
+
+    <h2>5.Map遍历</h2>
+    <div>
+        <ul>
+            <#list myMap?keys as key><!-- 通过list标签进行遍历,key是map中的key值 -->
+                <li>${key} : ${myMap[key]}</li><!-- 可以输出key和key所对应的值 -->
+            </#list>
+        </ul>
+    </div>
+
+    <h2>6.逻辑</h2>
+    <div>
+        <ul>
+            <#assign var=99 /><!-- 定义变量 -->
+            <li><span style="color: red">if :</span>
+                <#if var==99><!-- 如果var==99,则输出var -->
+                    99=${var}
+                </#if>
+            </li>
+
+            <li><span style="color: red">if else :</span>
+                <#if var==100 || var==99><!-- 可以使用||,&&,!来进行条件判断 -->
+                    100=${var} 或者 99=${var}
+                <#else>
+                    100!=${var}
+                </#if>
+            </li>
+
+            <li><span style="color: red">if elseif else :</span>
+                <#if var==100>
+                    100=${var}
+                <#elseif 100 &gt; var>
+                    100大于${var}
+                <#else>
+                    100小于${var}
+                </#if>
+            </li>
+
+            <li><span style="color: red">判断变量是否存在 :</span>
+                <#if myvar??><!-- 判断变量是否存在 -->
+                    myvar存在
+                <#else>
+                    myvar不存在
+                </#if>
+            </li>
+
+            <li><span style="color: red">switch case :</span>
+                <#switch var>
+                    <#case 99>
+                        99
+                        <#break>
+                    <#case 100>
+                        100
+                        <#break>
+                </#switch>
+            </li>
+
+        </ul>
+    </div>
+
+</body>
+</html>
